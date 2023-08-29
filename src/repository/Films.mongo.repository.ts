@@ -1,29 +1,32 @@
-/* eslint-disable lines-between-class-members */
+import createDebug from 'debug';
 import { readFile, writeFile } from 'fs/promises';
-import { Escalador, escaladorNoID } from '../model/escalador';
+import { Film } from '../entities/Films.js';
 import { HttpError } from '../model/http.error.js';
-import { Repository } from './repository';
+import { Repository } from './repository.js';
+const debug = createDebug('W6E:Repo:TasksFsRepo');
 
-export class EscaladorRepo implements Repository<Escalador> {
+export class FilmsRepo implements Repository<Film> {
   private file: string;
   constructor() {
     this.file = 'data.json';
+    debug('Instantiated');
   }
 
-  private async saveData(data: Escalador[]) {
+  private async saveData(data: Film[]) {
     // Aki
     await writeFile(this.file, JSON.stringify(data), { encoding: 'utf-8' });
   }
 
-  async getAll(): Promise<Escalador[]> {
-    const data: Escalador[] = JSON.parse(
+  async getAll(): Promise<Film[]> {
+    const data: Film[] = JSON.parse(
       await readFile(this.file, { encoding: 'utf-8' })
     );
     return data;
     /* La funcion de get all es que lo que le devuelve readFile */
   }
-  async getById(id: Escalador['id']): Promise<Escalador> {
-    const data: Escalador[] = await this.getAll();
+
+  async getById(id: Film['id']): Promise<Film> {
+    const data: Film[] = await this.getAll();
     const item = data.find((item) => item.id === id);
     if (!item)
       throw new HttpError(
@@ -37,9 +40,10 @@ export class EscaladorRepo implements Repository<Escalador> {
     return item;
   }
 
-  async post(newData: escaladorNoID): Promise<Escalador> {
-    const data: Escalador[] = await this.getAll();
-    const newEscalador: Escalador = {
+  async post(newData: Film): Promise<Film> {
+    // Duda  newData:FilmNoId -> lo he pasado a Film pq en el tipado Film auna ambas, es correcto¿?
+    const data: Film[] = await this.getAll();
+    const newEscalador: Film = {
       ...newData,
       id: Math.floor(Math.random() * 9999).toString(),
     };
@@ -48,11 +52,8 @@ export class EscaladorRepo implements Repository<Escalador> {
     return newEscalador;
   }
 
-  async patch(
-    id: Escalador['id'],
-    item: Partial<Escalador>
-  ): Promise<Escalador> {
-    const data: Escalador[] = await this.getAll();
+  async patch(id: Film['id'], item: Partial<Film>): Promise<Film> {
+    const data: Film[] = await this.getAll();
     const index = data.findIndex((item) => item.id === id);
     if (index < 0)
       throw new HttpError(
@@ -68,8 +69,8 @@ export class EscaladorRepo implements Repository<Escalador> {
     return data[index];
   }
 
-  async delete(id: Escalador['id']): Promise<void> {
-    const data: Escalador[] = await this.getAll();
+  async delete(id: Film['id']): Promise<void> {
+    const data: Film[] = await this.getAll();
     const index = data.findIndex((item) => item.id === id);
     if (index < 0)
       throw new HttpError(

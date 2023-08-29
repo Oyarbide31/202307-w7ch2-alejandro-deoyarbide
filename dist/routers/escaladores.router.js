@@ -1,7 +1,7 @@
 import createDebug from 'debug';
 import { Router as createRouter } from 'express';
-import { EscaladorController } from '../controller/escalador.controller';
-import { EscaladorRepo } from '../repository/escalador.fs.repository';
+import { EscaladorController } from '../controller/escalador.controller.js';
+import { EscaladorRepo } from '../repository/escalador.fs.repository.js';
 const debug = createDebug('W6E:Router:EscaladoresRouter');
 debug('Loaded');
 const repo = new EscaladorRepo(); // Aki tienes 1 archivo
