@@ -1,4 +1,4 @@
-export type escalador = {
+export type Escalador = {
   id: string;
   nombre: string;
   genero: string;

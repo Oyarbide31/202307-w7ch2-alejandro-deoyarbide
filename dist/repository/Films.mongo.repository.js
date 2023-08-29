@@ -3,7 +3,7 @@ import createDebug from 'debug';
 import { readFile, writeFile } from 'fs/promises';
 import { HttpError } from '../types/http.error.js';
 const debug = createDebug('W6E:Repo:NotesMongoRepo');
-export class PeliculasRepository {
+export class FilmsRepository {
     file;
     constructor() {
         this.file = 'data.json';

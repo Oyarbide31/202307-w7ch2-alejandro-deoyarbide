@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { Film } from '../entities/peliculas';
+import { Film } from '../entities/Films';
 
 const filmsSchema = new Schema<Film>({
   title: {
@@ -17,4 +17,4 @@ const filmsSchema = new Schema<Film>({
   },
 });
 
-export const NoteModel = model('Film', filmsSchema, 'films');
+export const FilmModel = model('Film', filmsSchema, 'films');
