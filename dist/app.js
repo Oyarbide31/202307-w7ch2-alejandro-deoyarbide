@@ -3,6 +3,7 @@ import createDebug from 'debug';
 import express from 'express';
 import morgan from 'morgan';
 import { escaladoresRouter } from './routers/escaladores.router.js';
+import { filmsRouter } from './routers/films.router.js';
 export const app = express();
 const debug = createDebug('W6E:App');
 debug('Started'); // Guardo mensajes de depuración
@@ -21,7 +22,7 @@ app.get('/', (req, res) => {
     res.end();
 });
 app.use('/escaladores', escaladoresRouter);
-app.use('/peliculas', peliculasRouter);
+app.use('/peliculas', filmsRouter);
 /* Aquí configura el servidor web, se definen rutas y el middleware para manejar solicitudes y respuestas
 además se utilizan funciones de depuración para registar la info por consola
 

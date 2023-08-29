@@ -1,12 +1,12 @@
-/* eslint-disable no-undef */
 import createDebug from 'debug';
 import { readFile, writeFile } from 'fs/promises';
-import { HttpError } from '../types/http.error.js';
-const debug = createDebug('W6E:Repo:NotesMongoRepo');
-export class FilmsRepository {
+import { HttpError } from '../model/http.error.js';
+const debug = createDebug('W6E:Repo:TasksFsRepo');
+export class FilmsRepo {
     file;
     constructor() {
         this.file = 'data.json';
+        debug('Instantiated');
     }
     async saveData(data) {
         // Aki
@@ -27,6 +27,7 @@ export class FilmsRepository {
         return item;
     }
     async post(newData) {
+        // Duda  newData:FilmNoId -> lo he pasado a Film pq en el tipado Film auna ambas, es correcto¿?
         const data = await this.getAll();
         const newEscalador = {
             ...newData,

@@ -1,14 +1,14 @@
 import createDebug from 'debug';
 import { Router as createRouter } from 'express';
-import { EscaladorController } from '../controller/escalador.controller.js';
-import { EscaladorRepo } from '../repository/escalador.fs.repository.js';
-const debug = createDebug('W6E:Router:EscaladoresRouter');
+import { FilmController } from '../controller/films.controller.js';
+import { FilmsRepo } from '../repository/Films.mongo.repository.js';
+const debug = createDebug('W6E:Router:filmsRouter');
 debug('Loaded');
-const repo = new EscaladorRepo(); // Aki tienes 1 archivo
-const controller = new EscaladorController(repo); // Aki tienes otro archivo
-export const peliculasRouter = createRouter();
-peliculasRouter.get('/peliculas', controller.getAll.bind(controller));
-peliculasRouter.get('/peliculas/:id', controller.getById.bind(controller));
-peliculasRouter.post('/peliculas', controller.create.bind(controller));
-peliculasRouter.patch('/peliculas/:id', controller.update.bind(controller));
-peliculasRouter.delete('/peliculas/:id', controller.delete.bind(controller));
+const repo = new FilmsRepo(); // Aki tienes 1 archivo
+const controller = new FilmController(repo); // Aki tienes otro archivo
+export const filmsRouter = createRouter();
+filmsRouter.get('/peliculas', controller.getAll.bind(controller));
+filmsRouter.get('/peliculas/:id', controller.getById.bind(controller));
+filmsRouter.post('/peliculas', controller.create.bind(controller));
+filmsRouter.patch('/peliculas/:id', controller.update.bind(controller));
+filmsRouter.delete('/peliculas/:id', controller.delete.bind(controller));

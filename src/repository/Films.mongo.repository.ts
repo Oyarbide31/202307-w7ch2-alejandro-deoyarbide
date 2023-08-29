@@ -1,31 +1,32 @@
-/* eslint-disable no-undef */
 import createDebug from 'debug';
 import { readFile, writeFile } from 'fs/promises';
-import { HttpError } from '../types/http.error.js';
+import { Film } from '../entities/Films.js';
+import { HttpError } from '../model/http.error.js';
 import { Repository } from './repository.js';
-const debug = createDebug('W6E:Repo:NotesMongoRepo');
+const debug = createDebug('W6E:Repo:TasksFsRepo');
 
-export class FilmsRepository implements Repository<Films> {
+export class FilmsRepo implements Repository<Film> {
   private file: string;
   constructor() {
     this.file = 'data.json';
+    debug('Instantiated');
   }
 
-  private async saveData(data: Films[]) {
+  private async saveData(data: Film[]) {
     // Aki
     await writeFile(this.file, JSON.stringify(data), { encoding: 'utf-8' });
   }
 
-  async getAll(): Promise<Films[]> {
-    const data: Films[] = JSON.parse(
+  async getAll(): Promise<Film[]> {
+    const data: Film[] = JSON.parse(
       await readFile(this.file, { encoding: 'utf-8' })
     );
     return data;
     /* La funcion de get all es que lo que le devuelve readFile */
   }
 
-  async getById(id: Films['id']): Promise<Films> {
-    const data: Films[] = await this.getAll();
+  async getById(id: Film['id']): Promise<Film> {
+    const data: Film[] = await this.getAll();
     const item = data.find((item) => item.id === id);
     if (!item)
       throw new HttpError(
@@ -39,9 +40,10 @@ export class FilmsRepository implements Repository<Films> {
     return item;
   }
 
-  async post(newData: FilmsNoID): Promise<Films> {
-    const data: Films[] = await this.getAll();
-    const newEscalador: Films = {
+  async post(newData: Film): Promise<Film> {
+    // Duda  newData:FilmNoId -> lo he pasado a Film pq en el tipado Film auna ambas, es correcto¿?
+    const data: Film[] = await this.getAll();
+    const newEscalador: Film = {
       ...newData,
       id: Math.floor(Math.random() * 9999).toString(),
     };
@@ -50,8 +52,8 @@ export class FilmsRepository implements Repository<Films> {
     return newEscalador;
   }
 
-  async patch(id: Films['id'], item: Partial<Films>): Promise<Films> {
-    const data: Films[] = await this.getAll();
+  async patch(id: Film['id'], item: Partial<Film>): Promise<Film> {
+    const data: Film[] = await this.getAll();
     const index = data.findIndex((item) => item.id === id);
     if (index < 0)
       throw new HttpError(
@@ -67,8 +69,8 @@ export class FilmsRepository implements Repository<Films> {
     return data[index];
   }
 
-  async delete(id: Films['id']): Promise<void> {
-    const data: Films[] = await this.getAll();
+  async delete(id: Film['id']): Promise<void> {
+    const data: Film[] = await this.getAll();
     const index = data.findIndex((item) => item.id === id);
     if (index < 0)
       throw new HttpError(
